@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertex Engine</title>
+    <link rel="icon" type="image/png" href="Vertex.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="user-bar">
+        <div class="left-section">
+            <div class="logo">
+                <img src="Vertex.png" alt="Vertex Logo">
+            </div>
+            <div class="project-controls">
+                <button class="icon-btn" onclick="createNewProject()" title="New Project">+</button>
+                <input type="text" id="project-name" value="Untitled Project">
+            </div>
+        </div>
+        
+        <div id="auth-section" class="auth-buttons">
+            <button onclick="openModal('signin-modal')">Sign In</button>
+            <button class="primary" onclick="openModal('signup-modal')">Join Vertex</button>
+        </div>
+    </header>
+
+    <div id="app">
+        <div id="toolbar">
+            <div class="category">
+                <h3 class="motion-text">Motion</h3>
+                <button class="block motion" onclick="moveSprite(10)">Move 10 Steps</button>
+                <button class="block motion" onclick="rotateSprite(15)">Turn 15 Deg</button>
+            </div>
+
+            <div class="category">
+                <h3 class="looks-text">Looks</h3>
+                <button class="block looks" onclick="changeColor('#ff0000')">Set Red</button>
+                <button class="block looks" onclick="changeColor('#007acc')">Set Blue</button>
+                <button class="block looks" onclick="changeSize(5)">Change Size by 5</button>
+            </div>
+
+            <button class="block reset" onclick="resetSprite()">Reset Stage</button>
+        </div>
+        <div id="stage-container">
+            <canvas id="stage"></canvas>
+        </div>
+    </div>
+
+    <div id="signin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signin-modal')">&times;</span>
+            <h2>Welcome Back</h2>
+            <input type="text" id="login-user" placeholder="Username">
+            <input type="password" id="login-pass" placeholder="Password">
+            <button class="submit-btn" onclick="handleSignIn()">Sign In</button>
+        </div>
+    </div>
+
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signup-modal')">&times;</span>
+            <h2>Create Vertex Account</h2>
+            <input type="text" id="reg-user" placeholder="Choose Username">
+            <input type="email" id="reg-email" placeholder="Email Address">
+            <input type="password" id="reg-pass" placeholder="Create Password">
+            <button class="submit-btn" onclick="handleSignUp()">Create Account</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
