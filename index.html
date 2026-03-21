@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vertex Engine</title>
+    <title>Vertex Engine | Create & Share</title>
     <link rel="icon" type="image/png" href="Vertex.png">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,22 +27,30 @@
     </header>
 
     <div id="vertex-hub">
+        <div id="owner-panel">
+            <div id="admin-stats"></div>
+        </div>
+
         <section class="banner">
             <h1>Vertex Hub</h1>
+            <p>Discover projects from the community</p>
             <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search for a player...">
+                <input type="text" id="search-input" placeholder="Search for a player username...">
                 <button onclick="searchPlayer()">Search</button>
             </div>
         </section>
 
         <section class="hub-grid">
             <div class="hub-column">
-                <h2 class="featured-text">⭐ Featured (500+ Likes)</h2>
-                <div id="featured-list" class="card-container"></div>
+                <h2 class="featured-text">⭐ Featured Projects (500+ Likes)</h2>
+                <div id="featured-list" class="card-container">
+                    </div>
             </div>
+
             <div class="hub-column">
-                <h2>Recent Community Projects</h2>
-                <div id="community-list" class="card-container"></div>
+                <h2>New Community Projects</h2>
+                <div id="community-list" class="card-container">
+                    </div>
             </div>
         </section>
 
@@ -58,8 +66,15 @@
                 <button class="block motion" onclick="moveSprite(10)">Move 10 Steps</button>
                 <button class="block motion" onclick="rotateSprite(15)">Turn 15 Deg</button>
             </div>
-            <button class="block reset" onclick="resetSprite()">Reset Stage</button>
+            
+            <div class="category">
+                <h3 class="looks-text" style="color:#9966ff;">Looks</h3>
+                <button class="block" style="background:#9966ff;" onclick="resetSprite()">Reset Character</button>
+            </div>
+
+            <button class="block reset" onclick="showHub()">Back to Hub</button>
         </div>
+
         <div id="stage-container">
             <canvas id="stage"></canvas>
         </div>
@@ -68,7 +83,7 @@
     <div id="signin-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('signin-modal')">&times;</span>
-            <h2>Sign In</h2>
+            <h2>Welcome Back</h2>
             <input type="text" id="login-user" placeholder="Username">
             <input type="password" id="login-pass" placeholder="Password">
             <button class="submit-btn" onclick="handleSignIn()">Login</button>
@@ -78,10 +93,10 @@
     <div id="signup-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('signup-modal')">&times;</span>
-            <h2>Join Vertex</h2>
-            <input type="text" id="reg-user" placeholder="Username">
+            <h2>Create Vertex Account</h2>
+            <input type="text" id="reg-user" placeholder="Choose Username">
             <input type="password" id="reg-pass" placeholder="Create Password">
-            <button class="submit-btn" onclick="handleSignUp()">Create Account</button>
+            <button class="submit-btn" onclick="handleSignUp()">Join Community</button>
         </div>
     </div>
 
@@ -89,7 +104,8 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('profile-modal')">&times;</span>
             <h2 id="profile-name">User Profile</h2>
-            <p id="profile-date">Joined: --</p>
+            <div id="profile-date" style="color: #ccc; line-height: 1.6;">
+                </div>
         </div>
     </div>
 
@@ -97,7 +113,12 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('rules-modal')">&times;</span>
             <h2>Vertex Rules</h2>
-            <p>1. Real people only—no fake likes.<br>2. Be respectful.<br>3. Keep it coding-focused!</p>
+            <ul style="text-align: left; color: #ccc; font-size: 14px;">
+                <li><strong>No Faking:</strong> Real likes only. No botting or alt-account spam.</li>
+                <li><strong>Respect:</strong> Be kind to other creators in the community.</li>
+                <li><strong>Ownership:</strong> Only delete projects you have permission to remove.</li>
+                <li><strong>Safety:</strong> Do not share personal information in project names.</li>
+            </ul>
         </div>
     </div>
 
