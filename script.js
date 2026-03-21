@@ -11,7 +11,45 @@ function saveGlobal() {
     localStorage.setItem('vertex_global_projects', JSON.stringify(communityProjects)); 
 }
 
-// --- HUB RENDERING & LOGIC ---
+// --- NEW: CROSS-DEVICE DATA SAVING (FILE SYSTEM) ---
+
+function exportProject() {
+    const projectName = document.getElementById('project-name').value;
+    const projectData = {
+        name: projectName,
+        sprite: sprite,
+        version: "1.0"
+    };
+    
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", projectName + ".vertex");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+}
+
+function importProject() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.vertex';
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = readerEvent => {
+            const content = JSON.parse(readerEvent.target.result);
+            sprite = content.sprite;
+            document.getElementById('project-name').value = content.name;
+            draw();
+            alert("Project Loaded Successfully!");
+        }
+    }
+    input.click();
+}
+
+// --- HUB RENDERING ---
 function renderHub() {
     const featuredList = document.getElementById('featured-list');
     const communityList = document.getElementById('community-list');
@@ -61,6 +99,8 @@ function addLike(projectId) {
 function shareProject() {
     const user = localStorage.getItem('vertex_session');
     const title = document.getElementById('project-name').value;
+    if(!user) return alert("Sign in to share!");
+    
     const newProject = { 
         id: "proj_" + Date.now(), 
         author: user, 
@@ -87,19 +127,14 @@ function searchPlayer() {
     
     if (rawData) {
         const data = JSON.parse(rawData);
-        // Count how many projects this player has published
         const count = communityProjects.filter(p => p.author === query).length;
-        
         document.getElementById('profile-name').innerText = query;
-        document.getElementById('profile-date').innerHTML = `
-            Joined: ${data.joinDate}<br>
-            <span style="color: #ffab19;">Total Projects: ${count}</span>
-        `;
+        document.getElementById('profile-date').innerHTML = `Joined: ${data.joinDate}<br><span style="color: #ffab19;">Total Projects: ${count}</span>`;
         openModal('profile-modal');
     } else { alert("Player not found!"); }
 }
 
-// --- SYSTEM NAVIGATION ---
+// --- NAVIGATION & AUTH ---
 function showHub() { 
     document.getElementById('vertex-hub').style.display = "block"; 
     document.getElementById('app').style.display = "none"; 
@@ -109,8 +144,15 @@ function showHub() {
 function startCreating() {
     document.getElementById('vertex-hub').style.display = "none";
     document.getElementById('app').style.display = "flex";
-    if (localStorage.getItem('vertex_session')) {
+    
+    // Add Save/Load buttons to the UI if logged in
+    const controls = document.querySelector('.project-controls');
+    if (localStorage.getItem('vertex_session') && !document.getElementById('export-btn')) {
         document.getElementById('share-btn').style.display = "block";
+        controls.innerHTML += `
+            <button id="export-btn" class="cloud-btn" onclick="exportProject()">Save File</button>
+            <button id="import-btn" class="cloud-btn" onclick="importProject()">Load File</button>
+        `;
     }
     draw();
 }
@@ -126,28 +168,6 @@ window.onload = () => {
     renderHub();
     draw();
 };
-
-function handleSignUp() {
-    const user = document.getElementById('reg-user').value;
-    const pass = document.getElementById('reg-pass').value;
-    if (!user || !pass) return alert("Fill out all fields!");
-    if (localStorage.getItem('user_data_' + user)) return alert("User already exists!");
-
-    const userData = { password: pass, joinDate: new Date().toLocaleDateString() };
-    localStorage.setItem('user_data_' + user, JSON.stringify(userData));
-    localStorage.setItem('vertex_session', user);
-    location.reload();
-}
-
-function handleSignIn() {
-    const user = document.getElementById('login-user').value;
-    const pass = document.getElementById('login-pass').value;
-    const data = JSON.parse(localStorage.getItem('user_data_' + user));
-    if (data && data.password === pass) {
-        localStorage.setItem('vertex_session', user);
-        location.reload();
-    } else { alert("Invalid credentials!"); }
-}
 
 function logout() { localStorage.removeItem('vertex_session'); location.reload(); }
 function openModal(id) { document.getElementById(id).style.display = "block"; }
