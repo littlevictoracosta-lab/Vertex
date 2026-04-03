@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = 480; canvas.height = 360;
 let sprite = { x: 240, y: 180, angle: 0, size: 40, color: '#007acc' };
 
-const ADMIN_USER = "Owner"; 
+const ADMIN_USER = "Vertex"; 
 let communityProjects = JSON.parse(localStorage.getItem('vertex_global_projects')) || [];
 let likedProjects = JSON.parse(localStorage.getItem('vertex_liked_list')) || [];
 let currentAnnouncement = localStorage.getItem('vertex_announcement') || "";
